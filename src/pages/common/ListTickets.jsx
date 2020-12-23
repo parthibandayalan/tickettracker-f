@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import ProjectService from "./../../services/ProjectService/ProjectService";
 import TicketService from "./../../services/TicketService/TicketService";
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ListTickets() {
 
+    const history = useHistory();
     const classes = useStyles();
     //const id = this.props.match.params.id;    
     const location = useLocation();
@@ -75,8 +77,10 @@ export default function ListTickets() {
                                 <TableCell align="center">{ticket.title}</TableCell>
                                 <TableCell align="center">{ticket.description}</TableCell>
                                 <TableCell align="center">{ticket.severity}</TableCell>
-                                <TableCell align="center">{ticket.status}</TableCell>
-                                <TableCell align="center"><Link to={`/ticket/${ticket.id}`}>View</Link></TableCell>
+                                <TableCell align="center">{ticket.status}</TableCell>                                
+                                <TableCell align="center"><Button onClick={()=> history.push({pathname: '/ticket',
+                                                                                              state: { ticketId: ticket.id }
+                                                                                              ,})}>View</Button></TableCell>
                                 <TableCell align="center"><Button className="btn btn-warning" onClick={()=>deleteTicketClicked(ticket.id)}>Delete</Button></TableCell>
                             </TableRow>
                             )

@@ -18,7 +18,7 @@ export function* handleLoginUser(action) {
       interval = setInterval(()=>{
         console.log("Timer Tick");
         store.dispatch(refresh());
-        },3000)
+        },300000)
     }
     //const { authentication } = response;    
     yield put(setAuthenticated(authentication));

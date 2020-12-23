@@ -24,6 +24,7 @@ import { useHistory ,Switch} from "react-router-dom";
 import ListTickets from "./ListTickets";
 import { logoutUser, refreshToken } from "../../redux/ducks/authentication";
 import { useDispatch } from "react-redux";
+import TicketDetails from "./TicketsDetailsPage";
 
 const drawerWidth = 240;
 const drawerHeight = 50;
@@ -192,6 +193,7 @@ export default function Dashboard({ match }) {
         <div className={classes.contentIn} >
           <Switch>
             <Route exact path={match.url + `project`} component={ListTickets} />
+            <Route exact path={match.url + `ticket`} component={TicketDetails} />
             <Route exact path={match.url + "/"} component={ListProjects} />
           </Switch>
         </div>
