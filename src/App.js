@@ -1,18 +1,19 @@
-import { CssBaseline } from '@material-ui/core';
-import Dashboard from './pages/common/Dashboard';
-import LoginComponent from './pages/common/LoginComponent'
-import Error from './pages/common/Error'
-import { ProtectedRoute } from './components/routing/ProtectedRoute';
-import { BrowserRouter as Router , Route, Switch } from "react-router-dom";
+import { CssBaseline } from "@material-ui/core";
+import Dashboard from "./pages/common/Dashboard";
+import LoginComponent from "./pages/common/LoginComponent";
+import Error from "./pages/common/Error";
+import { ProtectedRoute } from "./components/routing/ProtectedRoute";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
+import CustomizedSnackbars from "./components/CustomizedSnackBar";
 
 function App() {
-
-  const auth = useSelector((state) => state.auth.authenticated);  
-  console.log("app.js : "+auth);
+  const auth = useSelector((state) => state.auth.authenticated);
+  console.log("app.js : " + auth);
 
   return (
     <div className="App">
+      <CustomizedSnackbars />
       <CssBaseline>
         <Router>
           <Switch>
@@ -23,7 +24,7 @@ function App() {
             {/*<Route path="*" component={() => "404 NOT FOUND"} />*/}
           </Switch>
         </Router>
-      </CssBaseline>      
+      </CssBaseline>
     </div>
   );
 }

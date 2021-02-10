@@ -145,7 +145,7 @@ export default function TicketDetails(props) {
             <TableRow>
               <TableCell align="center" >Assigned To </TableCell>
               <TableCell align="right">
-                <EditDropDownComponent passedValue={ticket.assignedUser.id} items={contributors} passedColumn="assignedUser" passedId={ticket.id} passedLabel={ticket.assignedUser.username}/>
+                <EditDropDownComponent passedValue={ticket.assignedUser != null ? ticket.assignedUser.id:"" } items={contributors} passedColumn="assignedUser" passedId={ticket.id} passedLabel={ticket.assignedUser != null ? ticket.assignedUser.username:"" }/>
               </TableCell>              
             </TableRow>
             <TableRow>

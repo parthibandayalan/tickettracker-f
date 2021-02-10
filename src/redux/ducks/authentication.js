@@ -18,17 +18,18 @@ export const refreshToken = () => ({
 
 export const setAuthenticated = (authenticated) => ({
   type: SET_AUTHENTICATED,
-  authenticated
+  authenticated,  
 });
 
 const initialState = {
-  authenticated:false
+  authenticated:false,
+  username:null
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTHENTICATED:
-      const { authenticated } = action;
+      const { authenticated,username } = action;
       return { ...state, authenticated };
     default:
       return state;

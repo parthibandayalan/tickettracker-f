@@ -1,4 +1,4 @@
-import React ,{useEffect}from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import {
@@ -20,11 +20,15 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { Route } from "react-router-dom";
 import ListProjects from "./ListProjects";
-import { useHistory ,Switch} from "react-router-dom";
+import { useHistory, Switch } from "react-router-dom";
 import ListTickets from "./ListTickets";
 import { logoutUser, refreshToken } from "../../redux/ducks/authentication";
 import { useDispatch } from "react-redux";
 import TicketDetails from "./TicketsDetailsPage";
+import CreateTicket from "../common/CreateTicket";
+import CreateProject from "../common/CreateProject";
+import ListUnapprovedUsers from "../common/ListUnapprovedUsers";
+import ListTicketsByUser from "../common/ListTicketsByUser";
 
 const drawerWidth = 240;
 const drawerHeight = 50;
@@ -72,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   contentIn: {
-    marginTop: drawerHeight
+    marginTop: drawerHeight,
   },
   content: {
     flexGrow: 1,
@@ -104,28 +108,118 @@ export default function Dashboard({ match }) {
       dispatch(refreshToken());
   },5000)
   });*/
+  /////////////////////////////////////
+  const adminItemsList = [
+    {
+      text: "View Projects",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/"),
+    },
+    {
+      text: "Create Ticket",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticket/create"),
+    },
+    {
+      text: "Create Project",
+      icon: <MailIcon />,
+      onClick: () => history.push("/project/create"),
+    },
+    {
+      text: "Unapproved User",
+      icon: <MailIcon />,
+      onClick: () => history.push("/users/unapproved"),
+    },
+    {
+      text: "List Tickets By User",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticketsbyuser"),
+    },
+  ];
+
+  const managerItemsList = [
+    {
+      text: "View Projects",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/"),
+    },
+    {
+      text: "Create Ticket",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticket/create"),
+    },
+    {
+      text: "Create Project",
+      icon: <MailIcon />,
+      onClick: () => history.push("/project/create"),
+    },
+    {
+      text: "List Tickets By User",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticketsbyuser"),
+    },
+  ];
+
+  const userItemsList = [
+    {
+      text: "View Projects",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/"),
+    },
+    {
+      text: "Create Ticket",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticket/create"),
+    },
+    {
+      text: "List Tickets By User",
+      icon: <MailIcon />,
+      onClick: () => history.push("/ticketsbyuser"),
+    },
+  ];
+  //////////////////////////////////
+
+  var itemsList = [];
 
   const handleLogout = () => {
     dispatch(logoutUser());
   };
 
-  const itemsList = [
-    {
-      text: "View Projects",
-      icon: <InboxIcon />,
-      onClick: () => history.push("/")
-    },
-    {
-      text: "About",
-      icon: <MailIcon />,
-      onClick: () => history.push("/")
-    },
-    {
-      text: "Contact",
-      icon: <MailIcon />,
-      onClick: () => history.push("/")
-    }
-  ];
+  if (localStorage.getItem("roles").includes("Admin")) {
+    itemsList = adminItemsList;
+  } else if (localStorage.getItem("roles").includes("Manager")) {
+    itemsList = managerItemsList;
+  } else if (localStorage.getItem("roles").includes("Contributor")) {
+    itemsList = userItemsList;
+  }
+
+  // const itemsList = [
+  //   {
+  //     text: "View Projects",
+  //     icon: <InboxIcon />,
+  //     onClick: () => history.push("/"),
+  //   },
+  //   {
+  //     text: "Create Ticket",
+  //     icon: <MailIcon />,
+  //     onClick: () => history.push("/ticket/create"),
+  //   },
+  //   {
+  //     text: "Create Project",
+  //     icon: <MailIcon />,
+  //     onClick: () => history.push("/project/create"),
+  //   },
+  //   {
+  //     text: "Unapproved User",
+  //     icon: <MailIcon />,
+  //     onClick: () => history.push("/users/unapproved"),
+  //   },
+  //   {
+  //     text: "List Tickets By User",
+  //     icon: <MailIcon />,
+  //     onClick: () => history.push("/ticketsbyuser"),
+  //   },
+  // ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,7 +250,9 @@ export default function Dashboard({ match }) {
           <Typography variant="h6" className={classes.title} align="center">
             Ticket Tracker
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
+          <Button color="inherit" onClick={handleLogout}>
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -173,15 +269,15 @@ export default function Dashboard({ match }) {
         </div>
         <Divider />
         <List>
-        {itemsList.map((item, index) => {
-          const { text, icon, onClick } = item;
-          return (
-            <ListItem button key={text} onClick={onClick}>
-              {icon && <ListItemIcon>{icon}</ListItemIcon>}
-              <ListItemText primary={text} />
-            </ListItem>
-          );
-        })}
+          {itemsList.map((item, index) => {
+            const { text, icon, onClick } = item;
+            return (
+              <ListItem button key={text} onClick={onClick}>
+                {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                <ListItemText primary={text} />
+              </ListItem>
+            );
+          })}
         </List>
         <Divider />
       </Drawer>
@@ -190,10 +286,34 @@ export default function Dashboard({ match }) {
           [classes.contentShift]: open,
         })}
       >
-        <div className={classes.contentIn} >
+        <div className={classes.contentIn}>
           <Switch>
             <Route exact path={match.url + `project`} component={ListTickets} />
-            <Route exact path={match.url + `ticket`} component={TicketDetails} />
+            <Route
+              exact
+              path={match.url + `ticket`}
+              component={TicketDetails}
+            />
+            <Route
+              exact
+              path={match.url + `ticket/create`}
+              component={CreateTicket}
+            />
+            <Route
+              exact
+              path={match.url + `project/create`}
+              component={CreateProject}
+            />
+            <Route
+              exact
+              path={match.url + `users/unapproved`}
+              component={ListUnapprovedUsers}
+            />
+            <Route
+              exact
+              path={match.url + `ticketsbyuser`}
+              component={ListTicketsByUser}
+            />
             <Route exact path={match.url + "/"} component={ListProjects} />
           </Switch>
         </div>
