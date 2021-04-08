@@ -6,10 +6,15 @@ import { ProtectedRoute } from "./components/routing/ProtectedRoute";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CustomizedSnackbars from "./components/CustomizedSnackBar";
+import { useEffect } from "react";
 
 function App() {
   const auth = useSelector((state) => state.auth.authenticated);
   console.log("app.js : " + auth);
+
+  useEffect(() => {
+    document.title = "Ticket Tracker";
+  }, []);
 
   return (
     <div className="App">

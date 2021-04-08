@@ -90,13 +90,7 @@ export default function LoginComponent() {
                     Sign in
                   </Typography>
                 </Grid>
-                <Grid
-                  item
-                  container
-                  direction="column"
-                  justify="center"
-                  spacing={2}
-                >
+                <Grid item container justify="center" spacing={4}>
                   <Form>
                     <Grid item>
                       <Field
