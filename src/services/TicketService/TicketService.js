@@ -14,7 +14,7 @@ class TicketService {
   }
 
   async getTicketAsContributor(id) {
-    const url = `${API_URL}/ticket/contributor/${id}`;
+    const url = `${API_URL}/ticket/assigned/${id}`;
     return axios.get(url).then((response) => response.data);
   }
 

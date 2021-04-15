@@ -32,7 +32,6 @@ export default function ListTicketsByUser() {
   const history = useHistory();
   const classes = useStyles();
   //const id = this.props.match.params.id;
-  const location = useLocation();
 
   const [tickets, setTickets] = useState([]);
   const [ticketsLength, setTicketsLength] = useState(0);

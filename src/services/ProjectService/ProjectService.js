@@ -14,7 +14,7 @@ class ProjectService {
   }
 
   async getProjectByProjectManager(id) {
-    const url = `${API_URL}/project/user/${id}`;
+    const url = `${API_URL}/project/manager/${id}`;
     return axios.get(url).then((response) => response.data);
   }
 

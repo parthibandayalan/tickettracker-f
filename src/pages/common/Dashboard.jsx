@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import {
@@ -29,6 +29,11 @@ import CreateTicket from "../common/CreateTicket";
 import CreateProject from "../common/CreateProject";
 import ListUnapprovedUsers from "../common/ListUnapprovedUsers";
 import ListTicketsByUser from "../common/ListTicketsByUser";
+import ListManagedProjects from "../manager/ListManagedProjects";
+import ListManagedTickets from "../manager/ListManagedTickets";
+import ListCreatedTickets from "./ListCreatedTickets";
+import ListAssignedTickets from "./ListAssignedTickets";
+import HomeComponent from "./HomeComponent";
 
 const drawerWidth = 240;
 const drawerHeight = 50;
@@ -139,9 +144,24 @@ export default function Dashboard({ match }) {
 
   const managerItemsList = [
     {
-      text: "View Projects",
+      text: "Managed Projects",
       icon: <InboxIcon />,
-      onClick: () => history.push("/"),
+      onClick: () => history.push("/managedprojects"),
+    },
+    {
+      text: "Managed Tickets",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/managedtickets"),
+    },
+    {
+      text: "Created Tickets",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/createdtickets"),
+    },
+    {
+      text: "Assigned Tickets",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/assignedtickets"),
     },
     {
       text: "Create Ticket",
@@ -314,7 +334,32 @@ export default function Dashboard({ match }) {
               path={match.url + `ticketsbyuser`}
               component={ListTicketsByUser}
             />
-            <Route exact path={match.url + "/"} component={ListProjects} />
+            <Route exact path={match.url + "/"} component={HomeComponent} />v
+            <Route
+              exact
+              path={match.url + "/listprojects"}
+              component={ListProjects}
+            />
+            <Route
+              exact
+              path={match.url + `managedprojects`}
+              component={ListManagedProjects}
+            />
+            <Route
+              exact
+              path={match.url + `managedtickets`}
+              component={ListManagedTickets}
+            />
+            <Route
+              exact
+              path={match.url + `createdtickets`}
+              component={ListCreatedTickets}
+            />
+            <Route
+              exact
+              path={match.url + `assignedtickets`}
+              component={ListAssignedTickets}
+            />
           </Switch>
         </div>
       </main>

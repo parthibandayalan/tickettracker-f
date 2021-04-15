@@ -2,16 +2,20 @@ import React, { Component, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/ducks/authentication";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Card,
   CardContent,
   FormGroup,
+  FormControlLabel,
   Typography,
   TextField,
   Paper,
+  Avatar,
   MenuItem,
   Box,
   Button,
+  Checkbox,
   Grid,
   makeStyles,
   Link,
@@ -22,15 +26,20 @@ import * as Yup from "yup";
 const initialValues = {
   username: "",
   password: "",
+  remember: false,
 };
 
 const useStyles = makeStyles({
-  loginPaper: {
-    height: "90vh",
+  paperStyle: {
+    padding: 20,
+    height: "550px",
+    width: 300,
+    margin: "100px auto",
   },
-  buttonBlock: {
-    width: "70%",
-  },
+  avatarStyle: { backgroundColor: "#1bbd7e" },
+  btnstyle: { margin: "8px 0" },
+  defaultbtnstyle: { margin: "8px 0" },
+  cardStyle: { margin: "20px 0", padding: 20 },
 });
 
 export default function LoginComponent() {
@@ -39,6 +48,39 @@ export default function LoginComponent() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.authenticated);
+
+  const initialValues = {
+    username: "",
+    password: "",
+    remember: false,
+  };
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("Username is required"),
+    password: Yup.string().required("Password is required"),
+  });
+  const onSubmit = (values, props) => {
+    console.log("Submition Done");
+    console.log(values);
+    //dispatch(loginUser(values)).then(() => history.push("/") );
+    dispatch(loginUser(values));
+    errorVisible = true;
+    console.log("dispatch done outside :" + auth);
+    setTimeout(() => {
+      props.resetForm();
+      props.setSubmitting(false);
+    }, 2000);
+  };
+
+  const loginAs = (username, password) => {
+    const values = {
+      username,
+      password,
+    };
+    dispatch(loginUser(values));
+    errorVisible = true;
+    console.log("dispatch done outside :" + auth);
+  };
 
   useEffect(() => {
     console.log("use effect : " + auth);
@@ -52,102 +94,100 @@ export default function LoginComponent() {
   console.log(classes);
   return (
     <>
-      <Grid container spacing={0} direction="row" justify="center">
-        <Grid
-          item
-          container
-          spacing={2}
-          direction="column"
-          xs={2}
-          justify="center"
-          className={classes.loginPaper}
-        >
+      <Grid>
+        <Paper className={classes.paperStyle}>
+          <Grid align="center">
+            <Avatar className={classes.avatarStyle}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography variant="h6">Sign In</Typography>
+          </Grid>
           <Formik
             initialValues={initialValues}
-            validationSchema={Yup.object().shape({
-              username: Yup.string().required("Username is required"),
-              password: Yup.string().required("Password is required"),
-            })}
-            onSubmit={(values, formikHelpers) => {
-              console.log("Submition Done");
-              console.log(values);
-              //dispatch(loginUser(values)).then(() => history.push("/") );
-              dispatch(loginUser(values));
-              errorVisible = true;
-              console.log("dispatch done outside :" + auth);
-            }}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
           >
-            {({ values, errors, isSubmitting, isValidating }) => (
-              <Paper
-                variant="elevation"
-                elevation={2}
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                <Grid item>
-                  <Typography component="h1" variant="h5">
-                    Sign in
-                  </Typography>
-                </Grid>
-                <Grid item container justify="center" spacing={4}>
-                  <Form>
-                    <Grid item>
-                      <Field
-                        required
-                        name="username"
-                        type="string"
-                        as={TextField}
-                        label="Username"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <ErrorMessage name="username" />
-                    </Grid>
-                    <Grid item>
-                      <Field
-                        required
-                        name="password"
-                        type="password"
-                        as={TextField}
-                        label="Password"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <ErrorMessage name="password" />
-                    </Grid>
-                    <Grid item>
-                      {!auth && errorVisible && (
-                        <div>Invalid Username or password</div>
-                      )}
-                    </Grid>
-                    <Grid item>
-                      <Box marginBottom={2}>
-                        <Button
-                          variant="contained"
-                          type="submit"
-                          disabled={isSubmitting || isValidating}
-                          className={classes.buttonBlock}
-                        >
-                          Submit
-                        </Button>
-                      </Box>
-                    </Grid>
-                    {/* <Box marginBottom={2}>
-                            <Button
-                              variant="contained"
-                              type="reset"
-                              disabled={isSubmitting || isValidating}
-                            >
-                              Reset
-                            </Button>
-                          </Box> */}
-                  </Form>
-                </Grid>
-              </Paper>
+            {(props) => (
+              <Form>
+                <Field
+                  as={TextField}
+                  label="Username"
+                  name="username"
+                  placeholder="Enter username"
+                  fullWidth
+                  required
+                  helperText={<ErrorMessage name="username" />}
+                />
+                <Field
+                  as={TextField}
+                  label="Password"
+                  name="password"
+                  placeholder="Enter password"
+                  type="password"
+                  fullWidth
+                  required
+                  helperText={<ErrorMessage name="password" />}
+                />
+                {/* <Field
+                  as={FormControlLabel}
+                  name="remember"
+                  control={<Checkbox color="primary" />}
+                  label="Remember me"
+                /> */}
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  disabled={props.isSubmitting}
+                  className={classes.btnstyle}
+                  fullWidth
+                >
+                  {props.isSubmitting ? "Loading" : "Sign in"}
+                </Button>
+              </Form>
             )}
           </Formik>
-        </Grid>
+          <Typography>
+            {" "}
+            Do you have an account ?<Link href="#">Sign Up</Link>
+          </Typography>
+          <Card className={classes.cardStyle}>
+            <Typography align="center"> Demo as</Typography>
+            <Button
+              type="submit"
+              onClick={() => {
+                loginAs("username1", "password1P@45");
+              }}
+              variant="contained"
+              className={classes.defaultbtnstyle}
+              fullWidth
+            >
+              Admin
+            </Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                loginAs("username4", "password1P@45");
+              }}
+              variant="contained"
+              className={classes.defaultbtnstyle}
+              fullWidth
+            >
+              Manager
+            </Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                loginAs("username2", "password2P$56");
+              }}
+              variant="contained"
+              className={classes.defaultbtnstyle}
+              fullWidth
+            >
+              Individual Contributor
+            </Button>
+          </Card>
+        </Paper>
       </Grid>
     </>
   );
