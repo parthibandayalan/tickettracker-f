@@ -13,8 +13,7 @@ import {
 } from "@material-ui/core/";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import TicketService from "./../../services/TicketService/TicketService";
-import ProjectService from "./../../services/ProjectService/ProjectService";
+import TicketService from "../../services/TicketService/TicketService";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -29,35 +28,18 @@ const useStyles = makeStyles((theme) => ({
 export default function ListManagedTickets() {
   const history = useHistory();
   const classes = useStyles();
-  //const id = this.props.match.params.id;
 
   const [tickets, setTickets] = useState([]);
-  const [ticketsLength, setTicketsLength] = useState(0);
-
-  const deleteTicketClicked = (id) => {
-    //let username = AuthenticationService.getLoggedInUserName()
-    //console.log(id + " " + username);
-    TicketService.deleteTicketById(id).then(
-      setTicketsLength(ticketsLength - 1)
-      /*response => {
-                //this.setState({ message: `Delete of Ticket ${id} Successful` })
-                //this.refreshTodos()
-            }*/
-    );
-  };
 
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    ProjectService.getProjectByProjectManager(username).then((response) => {
-      let tempTickets = [];
-      for (let eachProject of response) {
-        tempTickets.push(...eachProject.tickets);
-      }
+    TicketService.getTicketAsContributor(username).then((response) => {
+      console.log(response);
       setTickets([]);
-      setTickets(tempTickets);
+      setTickets(response);
     });
-  }, [ticketsLength, username]);
+  }, [username]);
 
   return (
     <div align="center">
@@ -68,7 +50,7 @@ export default function ListManagedTickets() {
             align="center"
             variant="h5"
           >
-            Managed Tickets
+            Assigned Tickets
           </Typography>
           <Table className={classes.table}>
             <TableHead>
@@ -79,7 +61,6 @@ export default function ListManagedTickets() {
                 <TableCell align="center">Severity</TableCell>
                 <TableCell align="center">Status</TableCell>
                 <TableCell align="center">View Ticket Details</TableCell>
-                <TableCell align="center">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -96,20 +77,12 @@ export default function ListManagedTickets() {
                     <Button
                       onClick={() =>
                         history.push({
-                          pathname: "/ticket",
+                          pathname: "/viewticketasassignee",
                           state: { ticketId: ticket.id },
                         })
                       }
                     >
                       View
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      className="btn btn-warning"
-                      onClick={() => deleteTicketClicked(ticket.id)}
-                    >
-                      Delete
                     </Button>
                   </TableCell>
                 </TableRow>

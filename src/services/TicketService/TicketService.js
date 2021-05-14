@@ -35,6 +35,13 @@ class TicketService {
     return axios.put(url, payload).then((response) => response.data);
   }
 
+  async addComment(ticketId, author, message) {
+    const url = `${API_URL}/ticket/addcomment`;
+    let payload = { ticketId: ticketId, author: author, message: message };
+    console.log(payload);
+    return axios.put(url, payload).then((response) => response.data);
+  }
+
   async createTicket(values) {
     const url = `${API_URL}/ticket/create`;
     let payload = {

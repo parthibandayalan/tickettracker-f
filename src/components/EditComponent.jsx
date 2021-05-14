@@ -10,11 +10,11 @@ import TicketService from "../services/TicketService/TicketService";
 
 const useStyles = makeStyles((theme) => ({
   cBox: {
-    display: "inline"
+    display: "inline",
   },
   childBox: {
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 }));
 
 export default function EditComponent(props) {
@@ -23,7 +23,7 @@ export default function EditComponent(props) {
   const [savedValue, setSavedValue] = useState("default value");
   const [currentValue, setCurrentValue] = useState("current value");
 
-  const { passedValue,passedId,passedColumn } = props;
+  const { passedValue, passedId, passedColumn } = props;
 
   useEffect(() => {
     setSavedValue(passedValue);
@@ -33,13 +33,15 @@ export default function EditComponent(props) {
   const onClickSave = () => {
     setSavedValue(currentValue);
 
-    TicketService.updateTicketById(passedId,passedColumn,currentValue).then(response => {            
-      //this.setState({ ticket: response });
-      //this.setState({ ticketReceived: true });
-      console.log(response);
-      //console.log(this.state.ticket);
-      //console.log(this.state.ticketReceived);
-  });        
+    TicketService.updateTicketById(passedId, passedColumn, currentValue).then(
+      (response) => {
+        //this.setState({ ticket: response });
+        //this.setState({ ticketReceived: true });
+        console.log(response);
+        //console.log(this.state.ticket);
+        //console.log(this.state.ticketReceived);
+      }
+    );
 
     setEditMode(false);
   };
@@ -82,8 +84,9 @@ export default function EditComponent(props) {
             onChange={(e) => setCurrentValue(e.target.value)}
             multiline
             InputProps={{
-              readOnly: true
+              readOnly: true,
             }}
+            inputProps={{ min: 0, style: { textAlign: "center" } }}
           />
         </Box>
         <Box className={classes.childBox}>

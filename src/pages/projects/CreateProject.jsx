@@ -95,7 +95,7 @@ export default function CreateProject() {
                 formikHelpers.resetForm();
                 formikHelpers.setSubmitting(false);
               }, 2000);
-              console.log(formikHelpers);
+              //console.log(formikHelpers);
             }}
           >
             {({ values, errors, isSubmitting, isValidating }) => (

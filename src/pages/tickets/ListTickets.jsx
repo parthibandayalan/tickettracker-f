@@ -9,48 +9,65 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  Link,
   Button,
 } from "@material-ui/core/";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { useLocation } from "react-router-dom";
+import ProjectService from "../../services/ProjectService/ProjectService";
 import TicketService from "../../services/TicketService/TicketService";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
-    maxWidth: 1000,
   },
   myTypography: {
     color: "#025f8c",
   },
 }));
 
-export default function ListManagedTickets() {
+export default function ListTickets() {
   const history = useHistory();
   const classes = useStyles();
+  //const id = this.props.match.params.id;
+  const location = useLocation();
 
   const [tickets, setTickets] = useState([]);
-
-  const username = localStorage.getItem("username");
+  const [ticketsLength, setTicketsLength] = useState(0);
 
   useEffect(() => {
-    TicketService.getTicketAsContributor(username).then((response) => {
+    ProjectService.getProjectById(location.state.projectId).then((response) => {
       console.log(response);
-      setTickets([]);
-      setTickets(response);
+      setTickets(response.tickets);
+      setTicketsLength(response.tickets.length);
+      //this.setState({ projects: response });
     });
-  }, [username]);
+  }, [location, ticketsLength]);
+
+  const deleteTicketClicked = (id) => {
+    //let username = AuthenticationService.getLoggedInUserName()
+    //console.log(id + " " + username);
+    TicketService.deleteTicketById(id).then(
+      setTicketsLength(ticketsLength - 1)
+      /*response => {
+                    //this.setState({ message: `Delete of Ticket ${id} Successful` })
+                    //this.refreshTodos()
+                }*/
+    );
+  };
 
   return (
-    <div align="center">
-      <Card className={classes.table}>
+    <div>
+      <Card>
         <TableContainer component={Paper}>
           <Typography
-            className={classes.myTypography}
             align="center"
-            variant="h5"
+            variant="h6"
+            id="tableTitle"
+            className={classes.myTypography}
           >
-            Assigned Tickets
+            Tickets For {location.state.projectId}
           </Typography>
           <Table className={classes.table}>
             <TableHead>
@@ -61,6 +78,7 @@ export default function ListManagedTickets() {
                 <TableCell align="center">Severity</TableCell>
                 <TableCell align="center">Status</TableCell>
                 <TableCell align="center">View Ticket Details</TableCell>
+                <TableCell align="center">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -83,6 +101,14 @@ export default function ListManagedTickets() {
                       }
                     >
                       View
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      className="btn btn-warning"
+                      onClick={() => deleteTicketClicked(ticket.id)}
+                    >
+                      Delete
                     </Button>
                   </TableCell>
                 </TableRow>

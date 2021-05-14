@@ -75,14 +75,14 @@ export default function ListManagedProjects() {
                     {project.projectDescription}
                   </TableCell>
                   <TableCell align="center">
-                    {project.projectManager.username}
+                    {project.projectManager.fullname}
                   </TableCell>
                   <TableCell align="center">{project.tickets.length}</TableCell>
                   <TableCell align="center">
                     <Button
                       onClick={() =>
                         history.push({
-                          pathname: "/project",
+                          pathname: "/ticketsasmanager",
                           state: { projectId: project.id },
                         })
                       }

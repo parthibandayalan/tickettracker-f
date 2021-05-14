@@ -19,21 +19,26 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import InboxIcon from "@material-ui/icons/Inbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { Route } from "react-router-dom";
-import ListProjects from "./ListProjects";
+import ListProjects from "../projects/ListProjects";
 import { useHistory, Switch } from "react-router-dom";
-import ListTickets from "./ListTickets";
+import ListTickets from "../tickets/ListTickets";
 import { logoutUser, refreshToken } from "../../redux/ducks/authentication";
 import { useDispatch } from "react-redux";
-import TicketDetails from "./TicketsDetailsPage";
-import CreateTicket from "../common/CreateTicket";
-import CreateProject from "../common/CreateProject";
-import ListUnapprovedUsers from "../common/ListUnapprovedUsers";
-import ListTicketsByUser from "../common/ListTicketsByUser";
-import ListManagedProjects from "../manager/ListManagedProjects";
-import ListManagedTickets from "../manager/ListManagedTickets";
-import ListCreatedTickets from "./ListCreatedTickets";
-import ListAssignedTickets from "./ListAssignedTickets";
+import ViewTicketAsCreator from "../tickets/ViewTicketAsCreator";
+import CreateTicket from "../tickets/CreateTicket";
+import CreateProject from "../projects/CreateProject";
+import ListUnapprovedUsers from "../user/ListUnapprovedUsers";
+import ListContributors from "../user/ListContributors";
+import ListTicketsByUser from "../tickets/ListTicketsByUser";
+import ListManagedProjects from "../projects/ListManagedProjects";
+import ListManagedTickets from "../tickets/ListManagedTickets";
+import ListCreatedTickets from "../tickets/ListCreatedTickets";
+import ListAssignedTickets from "../tickets/ListAssignedTickets";
+import ViewTicketAsManager from "../tickets/ViewTicketAsManager";
+import ViewTicketAsAssignee from "../tickets/ViewTicketAsAssignee";
 import HomeComponent from "./HomeComponent";
+import ListTicketsForManager from "../tickets/ListTicketsForManager";
+import AddContributors from "../user/AddContributors";
 
 const drawerWidth = 240;
 const drawerHeight = 50;
@@ -118,27 +123,12 @@ export default function Dashboard({ match }) {
     {
       text: "View Projects",
       icon: <InboxIcon />,
-      onClick: () => history.push("/"),
-    },
-    {
-      text: "Create Ticket",
-      icon: <MailIcon />,
-      onClick: () => history.push("/ticket/create"),
-    },
-    {
-      text: "Create Project",
-      icon: <MailIcon />,
-      onClick: () => history.push("/project/create"),
+      onClick: () => history.push("/listprojects"),
     },
     {
       text: "Unapproved User",
       icon: <MailIcon />,
       onClick: () => history.push("/users/unapproved"),
-    },
-    {
-      text: "List Tickets By User",
-      icon: <MailIcon />,
-      onClick: () => history.push("/ticketsbyuser"),
     },
   ];
 
@@ -174,28 +164,38 @@ export default function Dashboard({ match }) {
       onClick: () => history.push("/project/create"),
     },
     {
-      text: "List Tickets By User",
+      text: "List Project Contributors",
       icon: <MailIcon />,
-      onClick: () => history.push("/ticketsbyuser"),
+      onClick: () => history.push("/projects/contributors"),
+    },
+    {
+      text: "Add Contributors",
+      icon: <MailIcon />,
+      onClick: () => history.push("projects/add/contributors"),
     },
   ];
 
   const userItemsList = [
-    {
-      text: "View Projects",
-      icon: <InboxIcon />,
-      onClick: () => history.push("/"),
-    },
     {
       text: "Create Ticket",
       icon: <MailIcon />,
       onClick: () => history.push("/ticket/create"),
     },
     {
-      text: "List Tickets By User",
-      icon: <MailIcon />,
-      onClick: () => history.push("/ticketsbyuser"),
+      text: "Assigned Tickets",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/assignedtickets"),
     },
+    {
+      text: "Created Tickets",
+      icon: <InboxIcon />,
+      onClick: () => history.push("/createdtickets"),
+    },
+    // {
+    //   text: "List Tickets By User",
+    //   icon: <MailIcon />,
+    //   onClick: () => history.push("/ticketsbyuser"),
+    // },
   ];
   //////////////////////////////////
 
@@ -308,11 +308,12 @@ export default function Dashboard({ match }) {
       >
         <div className={classes.contentIn}>
           <Switch>
+            <Route exact path={match.url + "/"} component={HomeComponent} />
             <Route exact path={match.url + `project`} component={ListTickets} />
             <Route
               exact
-              path={match.url + `ticket`}
-              component={TicketDetails}
+              path={match.url + `ticketsasmanager`}
+              component={ListTicketsForManager}
             />
             <Route
               exact
@@ -331,13 +332,23 @@ export default function Dashboard({ match }) {
             />
             <Route
               exact
+              path={match.url + `projects/add/contributors`}
+              component={AddContributors}
+            />
+            <Route
+              exact
+              path={match.url + `projects/contributors`}
+              component={ListContributors}
+            />
+            <Route
+              exact
               path={match.url + `ticketsbyuser`}
               component={ListTicketsByUser}
             />
-            <Route exact path={match.url + "/"} component={HomeComponent} />v
+
             <Route
               exact
-              path={match.url + "/listprojects"}
+              path={match.url + "listprojects"}
               component={ListProjects}
             />
             <Route
@@ -359,6 +370,21 @@ export default function Dashboard({ match }) {
               exact
               path={match.url + `assignedtickets`}
               component={ListAssignedTickets}
+            />
+            <Route
+              exact
+              path={match.url + `viewticketasmanager`}
+              component={ViewTicketAsManager}
+            />
+            <Route
+              exact
+              path={match.url + `ticket`}
+              component={ViewTicketAsCreator}
+            />
+            <Route
+              exact
+              path={match.url + `viewticketasassignee`}
+              component={ViewTicketAsAssignee}
             />
           </Switch>
         </div>

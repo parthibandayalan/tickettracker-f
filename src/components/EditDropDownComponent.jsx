@@ -11,11 +11,11 @@ import TicketService from "../services/TicketService/TicketService";
 
 const useStyles = makeStyles((theme) => ({
   cBox: {
-    display: "inline"
+    display: "inline",
   },
   childBox: {
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 }));
 
 export default function EditComponent(props) {
@@ -28,8 +28,7 @@ export default function EditComponent(props) {
   const [currentLabel, setCurrentLabel] = useState("current label");
   const [savedLabel, setSavedLabel] = useState("saved label");
 
-  
-  const { passedValue,passedId,passedColumn,items,passedLabel } = props;
+  const { passedValue, passedId, passedColumn, items, passedLabel } = props;
   /*
   const currencies = [
     {
@@ -53,7 +52,7 @@ export default function EditComponent(props) {
   const handleChange = (event) => {
     setCurrentValue(event.target.value);
     const { myLabel } = event.currentTarget.dataset;
-    //console.log(myLabel) 
+    //console.log(myLabel)
     setCurrentLabel(myLabel);
   };
 
@@ -67,13 +66,15 @@ export default function EditComponent(props) {
   const onClickSave = () => {
     setSavedValue(currentValue);
     setSavedLabel(currentLabel);
-    TicketService.updateTicketById(passedId,passedColumn,currentValue).then(response => {            
-      //this.setState({ ticket: response });
-      //this.setState({ ticketReceived: true });
-      console.log(response);
-      //console.log(this.state.ticket);
-      //console.log(this.state.ticketReceived);
-  });        
+    TicketService.updateTicketById(passedId, passedColumn, currentValue).then(
+      (response) => {
+        //this.setState({ ticket: response });
+        //this.setState({ ticketReceived: true });
+        console.log(response);
+        //console.log(this.state.ticket);
+        //console.log(this.state.ticketReceived);
+      }
+    );
 
     setEditMode(false);
   };
@@ -90,9 +91,17 @@ export default function EditComponent(props) {
     <>
       <Box className={classes.cBox}>
         <Box className={classes.childBox}>
-          <TextField select value={currentValue} onChange={handleChange}>
+          <TextField
+            select
+            value={currentValue ? currentValue : ""}
+            onChange={handleChange}
+          >
             {items.map((option) => (
-              <MenuItem  key={option.label} value={option.value} data-my-label={option.label}>
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                data-my-label={option.label}
+              >
                 {option.label}
               </MenuItem>
             ))}
@@ -110,12 +119,18 @@ export default function EditComponent(props) {
         </Box>
       </Box>
     </>
-  ) : ( 
+  ) : (
     <>
       <Box className={classes.cBox}>
         <Box className={classes.childBox}>
-        <TextField  id="textField1" value={savedLabel}  multiline
-    InputProps={{ readOnly: true }} />          
+          {/* <TextField
+            id="textField1"
+            value={savedLabel}
+            multiline
+            InputProps={{ readOnly: true }}
+            align="right"
+          /> */}
+          {savedLabel}
         </Box>
         <Box className={classes.childBox}>
           <Button

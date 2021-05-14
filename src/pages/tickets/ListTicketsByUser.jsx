@@ -16,8 +16,8 @@ import {
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
-import ProjectService from "./../../services/ProjectService/ProjectService";
-import TicketService from "./../../services/TicketService/TicketService";
+import ProjectService from "../../services/ProjectService/ProjectService";
+import TicketService from "../../services/TicketService/TicketService";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({

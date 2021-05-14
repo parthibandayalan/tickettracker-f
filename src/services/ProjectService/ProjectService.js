@@ -15,7 +15,10 @@ class ProjectService {
 
   async getProjectByProjectManager(id) {
     const url = `${API_URL}/project/manager/${id}`;
-    return axios.get(url).then((response) => response.data);
+    return axios.get(url).then((response) => {
+      console.log(response.data);
+      return response.data;
+    });
   }
 
   async createProject(values) {
@@ -25,8 +28,39 @@ class ProjectService {
       projectDescription: values.projectDescription,
       projectManager: values.projectManager,
     };
-    //console.log(payload);
+
     return axios.post(url, payload).then((response) => response.status === 200);
+  }
+
+  async removeContributor(values) {
+    const url = `${API_URL}/project/remove/contributors`;
+    let payload = {
+      users: values.users,
+      projectId: values.projectId,
+      manager: values.manager,
+    };
+    console.log("Payload : " + JSON.stringify(payload));
+    return axios.post(url, payload).then((response) => response.status === 200);
+  }
+
+  async addContributor(values) {
+    const url = `${API_URL}/project/add/contributors`;
+    let payload = {
+      users: values.users,
+      projectId: values.projectId,
+      manager: values.manager,
+    };
+    console.log("Payload : " + JSON.stringify(payload));
+    return axios.post(url, payload).then((response) => response.status === 200);
+  }
+
+  async getAvailableContributors(values) {
+    const url = `${API_URL}/project/available/contributors`;
+    let payload = {
+      projectId: values.projectId,
+      manager: values.manager,
+    };
+    return axios.post(url, payload).then((response) => response.data);
   }
 }
 

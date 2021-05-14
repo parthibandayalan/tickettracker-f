@@ -13,7 +13,8 @@ import {
 } from "@material-ui/core/";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import TicketService from "./../../services/TicketService/TicketService";
+import TicketService from "../../services/TicketService/TicketService";
+import ProjectService from "../../services/ProjectService/ProjectService";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -48,10 +49,13 @@ export default function ListManagedTickets() {
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    TicketService.getTicketAsCreator(username).then((response) => {
-      console.log(response);
+    ProjectService.getProjectByProjectManager(username).then((response) => {
+      let tempTickets = [];
+      for (let eachProject of response) {
+        tempTickets.push(...eachProject.tickets);
+      }
       setTickets([]);
-      setTickets(response);
+      setTickets(tempTickets);
     });
   }, [ticketsLength, username]);
 
@@ -64,7 +68,7 @@ export default function ListManagedTickets() {
             align="center"
             variant="h5"
           >
-            Created Tickets
+            Managed Tickets
           </Typography>
           <Table className={classes.table}>
             <TableHead>
@@ -92,7 +96,7 @@ export default function ListManagedTickets() {
                     <Button
                       onClick={() =>
                         history.push({
-                          pathname: "/ticket",
+                          pathname: "/viewticketasmanager",
                           state: { ticketId: ticket.id },
                         })
                       }

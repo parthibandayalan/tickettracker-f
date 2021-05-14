@@ -28,6 +28,9 @@ class UserService {
   }*/
 
   async checkUsernameExist(username) {
+    if (username === "") {
+      return true;
+    }
     const url = `${API_URL}/check/user`;
     let payload = { username: username };
     //console.log(payload);
@@ -37,11 +40,12 @@ class UserService {
   async createUser(values) {
     const url = `${API_URL}/user/create`;
     let payload = {
+      fullname: values.fullname,
       username: values.username,
       password: values.password,
       role: values.role,
     };
-    //console.log(payload);
+    console.log("Register User : " + JSON.stringify(payload));
     return axios.post(url, payload).then((response) => response.status === 200);
   }
 
