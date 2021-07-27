@@ -22,9 +22,6 @@ export default function HomeComponent() {
   const classes = useStyles();
   const adminItemsList = [
     "To View and Edit projects click View Projects",
-    "To View and Edit Tickets Click View Tickets",
-    "To Create Projects Click 'Create Projects'",
-    "To Create Tickets Click 'Create Tickets'",
     "To Approve Users Click 'Approve Users'",
   ];
   const managerItemsList = [

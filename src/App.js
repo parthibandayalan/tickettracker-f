@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import CustomizedSnackbars from "./components/CustomizedSnackBar";
 import { useEffect } from "react";
 import SignIn from "./pages/common/SignIn";
+import IdleTimerDialog from "./components/IdleTimerDialog";
 
 function App() {
   const auth = useSelector((state) => state.auth.authenticated);
@@ -20,6 +21,7 @@ function App() {
   return (
     <div className="App">
       <CustomizedSnackbars />
+      <IdleTimerDialog />
       <CssBaseline>
         <Router>
           <Switch>

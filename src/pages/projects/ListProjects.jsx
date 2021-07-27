@@ -78,7 +78,16 @@ export default function ListProjects() {
                     </Button>
                   </TableCell>
                   <TableCell align="center">
-                    <Link to={`/project/contributors/${project.id}`}>View</Link>
+                    <Button
+                      onClick={() =>
+                        history.push({
+                          pathname: "/admin/contributors",
+                          state: { projectId: project.id },
+                        })
+                      }
+                    >
+                      View
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

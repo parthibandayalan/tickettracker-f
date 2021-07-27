@@ -39,6 +39,7 @@ import ViewTicketAsAssignee from "../tickets/ViewTicketAsAssignee";
 import HomeComponent from "./HomeComponent";
 import ListTicketsForManager from "../tickets/ListTicketsForManager";
 import AddContributors from "../user/AddContributors";
+import ListContributorsAdmin from "../user/ListContributorsAdmin";
 
 const drawerWidth = 240;
 const drawerHeight = 50;
@@ -126,7 +127,7 @@ export default function Dashboard({ match }) {
       onClick: () => history.push("/listprojects"),
     },
     {
-      text: "Unapproved User",
+      text: "Un-Approved Users",
       icon: <MailIcon />,
       onClick: () => history.push("/users/unapproved"),
     },
@@ -385,6 +386,11 @@ export default function Dashboard({ match }) {
               exact
               path={match.url + `viewticketasassignee`}
               component={ViewTicketAsAssignee}
+            />
+            <Route
+              exact
+              path={match.url + `admin/contributors`}
+              component={ListContributorsAdmin}
             />
           </Switch>
         </div>

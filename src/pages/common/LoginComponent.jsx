@@ -163,7 +163,7 @@ export default function LoginComponent({ handleChange }) {
           <Button
             type="submit"
             onClick={() => {
-              loginAs("username4", "password1P@45");
+              loginAs("username6", "password2P$56");
             }}
             variant="contained"
             className={classes.defaultbtnstyle}
@@ -174,7 +174,7 @@ export default function LoginComponent({ handleChange }) {
           <Button
             type="submit"
             onClick={() => {
-              loginAs("username2", "password2P$56");
+              loginAs("pglossop0", "soUpcCNGKGfT");
             }}
             variant="contained"
             className={classes.defaultbtnstyle}

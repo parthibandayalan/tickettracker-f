@@ -51,7 +51,7 @@ export default function ListUnapprovedUsers() {
       <Card>
         <TableContainer component={Paper}>
           <Typography variant="h6" id="tableTitle" component="div">
-            UnApproved Users
+            Un-Approved Users
           </Typography>
           <Table className={classes.table}>
             <TableHead>

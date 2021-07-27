@@ -51,6 +51,7 @@ export default function ListContributors() {
     { title: "Full Name", field: "fullname" },
   ];
   const username = localStorage.getItem("username");
+  const roles = JSON.parse(localStorage.getItem("roles")).Roles;
 
   const handleChange = (event) => {
     setSelectedProject(event.target.value);
@@ -125,7 +126,7 @@ export default function ListContributors() {
         listContributors.push(item);
       });
     }
-
+    console.table(listContributors);
     setData(listContributors);
   }, [projectsLength, selectedProject]);
 
@@ -134,23 +135,25 @@ export default function ListContributors() {
       <Card>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-label">Select Project</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={selectedProject}
-            onChange={handleChange}
-          >
-            <MenuItem value="">Select ...</MenuItem>
-            {projects.map((project) => (
-              <MenuItem
-                value={project.id}
-                key={project.id}
-                label={project.projectName}
-              >
-                {project.projectName}
-              </MenuItem>
-            ))}
-          </Select>
+          {(
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={selectedProject}
+              onChange={handleChange}
+            >
+              <MenuItem value="">Select ...</MenuItem>
+              {projects.map((project) => (
+                <MenuItem
+                  value={project.id}
+                  key={project.id}
+                  label={project.projectName}
+                >
+                  {project.projectName}
+                </MenuItem>
+              ))}
+            </Select>
+          ) && !roles.includes("Admin")}
         </FormControl>
         <Card className={classes.table}>
           <MaterialTable
@@ -158,7 +161,7 @@ export default function ListContributors() {
             columns={columns}
             data={data}
             options={{
-              selection: true,
+              selection: !roles.includes("Admin"),
               search: false,
             }}
             actions={[
